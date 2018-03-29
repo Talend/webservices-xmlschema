@@ -807,7 +807,11 @@ public class SchemaBuilder {
         if (offset == -1) {
             uri = pContext.getNamespaceURI(Constants.DEFAULT_NS_PREFIX);
             if (Constants.NULL_NS_URI.equals(uri)) {
-                return new QName(Constants.NULL_NS_URI, pName);
+                if (currentSchema.getLogicalTargetNamespace().isEmpty()) {
+                    return new QName(Constants.NULL_NS_URI, pName);
+                } else {
+                    return new QName(currentSchema.getLogicalTargetNamespace(), pName);
+                }
             }
             localName = pName;
             prefix = Constants.DEFAULT_NS_PREFIX;

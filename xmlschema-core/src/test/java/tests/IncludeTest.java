@@ -34,7 +34,9 @@ import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 
 import org.apache.ws.commons.schema.XmlSchema;
+import org.apache.ws.commons.schema.XmlSchemaAttributeGroupRef;
 import org.apache.ws.commons.schema.XmlSchemaCollection;
+import org.apache.ws.commons.schema.XmlSchemaComplexType;
 import org.apache.ws.commons.schema.XmlSchemaElement;
 import org.apache.ws.commons.schema.XmlSchemaExternal;
 import org.apache.ws.commons.schema.XmlSchemaInclude;
@@ -182,4 +184,25 @@ public class IncludeTest extends Assert {
         assertNotNull(el);
         assertNull(el.getAttributeNodeNS(null, "targetNamespace"));
     }
+
+
+    /**
+     * Schema included contains qualified references
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void testIncludeQualifiedRefs() throws Exception { 
+        String uri = Resources.asURI("XMLSCHEMA-51/a.xsd");
+        InputSource isource = new InputSource(new FileInputStream(uri));
+        isource.setSystemId(uri);
+        XmlSchemaCollection schemaCol = new XmlSchemaCollection();
+        XmlSchema schema = schemaCol.read(isource);
+        assertNotNull(schema);
+        QName typeName = new QName("http://example.org/a/", "TravelerCountType");
+        XmlSchemaComplexType type = (XmlSchemaComplexType) schemaCol.getTypeByQName(typeName);
+        XmlSchemaAttributeGroupRef groupRef = (XmlSchemaAttributeGroupRef) type.getAttributes().get(0);
+        assertNotNull(schemaCol.getAttributeGroupByQName(groupRef.getTargetQName()));
+    }
+
 }

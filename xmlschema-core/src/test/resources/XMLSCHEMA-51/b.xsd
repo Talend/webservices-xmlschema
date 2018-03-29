@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<xsd:attributeGroup name="QuantityGroup">
+		<xsd:attribute name="Quantity" type="xsd:integer"/>
+	</xsd:attributeGroup>
+	<xsd:complexType name="TravelerCountType">
+		<xsd:attributeGroup ref="QuantityGroup"/>
+	</xsd:complexType>
+</xsd:schema>
